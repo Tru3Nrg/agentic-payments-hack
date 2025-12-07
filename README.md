@@ -154,6 +154,28 @@ Agents can use the following tools:
 - **Environment Variables**: Never commit `.env.local` or any files containing real API keys
 - **Production**: For production use, implement proper key management (AWS KMS, Smart Accounts, etc.)
 
+## 🚀 Vercel Deployment
+
+### Setting Up Vercel KV for Persistent Storage
+
+The application uses Vercel KV (Redis) for persistent agent storage in production. To set it up:
+
+1. **Create a Vercel KV Database:**
+   - Go to your Vercel project dashboard
+   - Navigate to the "Storage" tab
+   - Click "Create Database" and select "KV"
+   - Follow the setup wizard
+
+2. **Environment Variables:**
+   Vercel KV automatically provides these environment variables:
+   - `KV_REST_API_URL` - Automatically set by Vercel
+   - `KV_REST_API_TOKEN` - Automatically set by Vercel
+
+3. **Redeploy:**
+   After creating the KV database, redeploy your application. The storage layer will automatically detect and use Vercel KV.
+
+**Note:** For local development, the app falls back to filesystem storage. In production on Vercel, it uses Vercel KV for persistence across serverless function invocations.
+
 ## 📝 Scripts
 
 ```bash
