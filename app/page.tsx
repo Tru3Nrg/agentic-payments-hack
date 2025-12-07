@@ -18,8 +18,18 @@ export default function Home() {
                     </p>
                 </div>
 
-                <div className="w-full mb-12">
+                {/* Build Your Own Agent - Commented out */}
+                {/* <div className="w-full mb-12">
                     <AgentBuilder />
+                </div> */}
+
+                {/* Game Asset Buying Agent - Moved to top */}
+                <div className="w-full max-w-2xl mx-auto text-left glass-panel rounded-2xl p-8 glass-hover mb-12">
+                    <h2 className="text-2xl font-bold mb-4 text-purple-300">🎮 Game Asset Buyer</h2>
+                    <p className="text-gray-400 mb-4">
+                        Automatically purchases items from the game store using MON via x402 payments. The agent handles the entire payment flow for you.
+                    </p>
+                    <AutoItemBuyerRunner />
                 </div>
 
                 <div className="w-full max-w-2xl mx-auto text-left glass-panel rounded-2xl p-8 glass-hover">
@@ -37,13 +47,6 @@ export default function Home() {
                         Finds the best flight deals for your next conference.
                     </p>
                     <FlightSearchRunner />
-                </div>
-
-                <div className="mt-8">
-                    <p className="text-gray-400 mb-4">
-                        Automatically purchases items from the game store using MON via x402 payments. The agent handles the entire payment flow for you.
-                    </p>
-                    <AutoItemBuyerRunner />
                 </div>
                 </div>
 
