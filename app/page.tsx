@@ -18,11 +18,6 @@ export default function Home() {
                     </p>
                 </div>
 
-                {/* Build Your Own Agent - Commented out */}
-                {/* <div className="w-full mb-12">
-                    <AgentBuilder />
-                </div> */}
-
                 {/* Game Asset Buying Agent - Moved to top */}
                 <div className="w-full max-w-2xl mx-auto text-left glass-panel rounded-2xl p-8 glass-hover mb-12">
                     <h2 className="text-2xl font-bold mb-4 text-purple-300">🎮 Game Asset Buyer</h2>
@@ -57,6 +52,11 @@ export default function Home() {
                     >
                         View All Agents →
                     </Link>
+                </div>
+
+                {/* Build Your Own Agent - At the bottom */}
+                <div className="w-full max-w-2xl mx-auto mt-12">
+                    <AgentBuilder />
                 </div>
             </div>
         </div>
