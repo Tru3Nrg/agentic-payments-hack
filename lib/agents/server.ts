@@ -1,6 +1,4 @@
 
-import fs from "fs";
-import path from "path";
 import {
     OPEN_SOURCE_CRYPTO_FUNDER,
     GITHUB_SUPPORT_AGENT,
@@ -10,8 +8,7 @@ import {
     AgentSpec
 } from "./spec";
 import { fundWallet } from "@/lib/thirdweb/wallet";
-
-const AGENTS_DIR = path.join(process.cwd(), "data", "agents");
+import { getAgent, saveAgent } from "@/lib/storage/agents";
 
 function getTemplate(id: string): AgentSpec | null {
     switch (id) {
@@ -25,11 +22,10 @@ function getTemplate(id: string): AgentSpec | null {
 }
 
 export async function getOrCreateAgent(agentId: string): Promise<AgentSpec> {
-    const agentPath = path.join(AGENTS_DIR, `${agentId}.json`);
-
     // Return existing if found
-    if (fs.existsSync(agentPath)) {
-        return JSON.parse(fs.readFileSync(agentPath, "utf-8"));
+    const existing = await getAgent(agentId);
+    if (existing) {
+        return existing;
     }
 
     // Create new
@@ -47,8 +43,8 @@ export async function getOrCreateAgent(agentId: string): Promise<AgentSpec> {
         wallet: { address: account.address, encryptedKey: privateKey }
     };
 
-    if (!fs.existsSync(AGENTS_DIR)) fs.mkdirSync(AGENTS_DIR, { recursive: true });
-    fs.writeFileSync(agentPath, JSON.stringify(agent, null, 2));
+    // Save agent (works in serverless environments)
+    await saveAgent(agent);
 
     // Optional: Auto-fund initial amount from master wallet (can keep or remove based on new flow)
     // We will keep a small amount for gas or just log it.

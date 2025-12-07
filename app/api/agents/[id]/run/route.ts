@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { runAgent } from "@/lib/agents/runtime";
 import { verifyPayment, x402Response } from "@/lib/x402/server";
-import { AgentSpec } from "@/lib/agents/spec";
-
-const AGENTS_DIR = path.join(process.cwd(), "data", "agents");
+import { getAgent } from "@/lib/storage/agents";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params;
-    const agentPath = path.join(AGENTS_DIR, `${id}.json`);
+    const agent = await getAgent(id);
 
-    if (!fs.existsSync(agentPath)) {
+    if (!agent) {
         return NextResponse.json({ error: "Agent not found" }, { status: 404 });
     }
-
-    const agent: AgentSpec = JSON.parse(fs.readFileSync(agentPath, "utf-8"));
 
     // Check Payment
     const requirement = {

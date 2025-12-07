@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
-import path from "path";
 import { AgentSpec } from "@/lib/agents/spec";
 import { createAgentWallet, fundWallet } from "@/lib/thirdweb/wallet";
-
-const AGENTS_DIR = path.join(process.cwd(), "data", "agents");
+import { saveAgent } from "@/lib/storage/agents";
 
 export async function POST(req: NextRequest) {
     try {
@@ -67,9 +64,8 @@ export async function POST(req: NextRequest) {
             tools: ["http.get", "coinbase.getPrice"]
         };
 
-        // Write to file
-        if (!fs.existsSync(AGENTS_DIR)) fs.mkdirSync(AGENTS_DIR, { recursive: true });
-        fs.writeFileSync(path.join(AGENTS_DIR, `${id}.json`), JSON.stringify(newAgent, null, 2));
+        // Save agent (works in serverless environments)
+        await saveAgent(newAgent);
 
         // Fund Wallet (fire and forget to avoid blocking UI too long, or await if fast)
         try {

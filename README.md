@@ -37,7 +37,7 @@ Searches GitHub for open issues with "support" or "help wanted" labels to help d
 
 ## 📋 Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - A wallet with Monad Testnet MON tokens (for funding agents)
 
