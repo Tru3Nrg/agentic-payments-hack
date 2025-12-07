@@ -5,25 +5,50 @@ import path from "path";
 // Try to initialize Vercel KV (Redis) for persistent storage
 // Vercel KV automatically reads from KV_REST_API_URL and KV_REST_API_TOKEN env vars
 let kv: any = null;
+let kvInitialized = false;
 
 async function initKV() {
-    // Check if KV environment variables are set (KV_REST_API_URL, KV_REST_API_TOKEN)
-    if ((process.env.KV_REST_API_URL || process.env.KV_URL) && !kv) {
+    if (kvInitialized) return;
+    kvInitialized = true;
+
+    // Check if KV environment variables are set
+    const hasKVEnv = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+
+    if (hasKVEnv && !kv) {
         try {
-            const { kv: vercelKv } = await import("@vercel/kv");
-            kv = vercelKv;
+            // @vercel/kv exports kv as a named export
+            const vercelKvModule = await import("@vercel/kv");
+            kv = vercelKvModule.kv;
+
+            // Test the connection
+            if (kv) {
+                console.log("Vercel KV initialized successfully");
+                // Test write/read to verify it works
+                try {
+                    await kv.set("__test__", "ok");
+                    const testValue = await kv.get("__test__");
+                    if (testValue === "ok") {
+                        await kv.del("__test__");
+                        console.log("Vercel KV connection verified");
+                    }
+                } catch (testErr) {
+                    console.warn("Vercel KV connection test failed:", testErr);
+                }
+            }
         } catch (err) {
             // KV not available, will use fallback storage
             console.warn("Vercel KV not available, using fallback storage:", err);
+            kv = null;
         }
+    } else {
+        if (!process.env.KV_REST_API_URL) {
+            console.log("KV_REST_API_URL not set");
+        }
+        if (!process.env.KV_REST_API_TOKEN) {
+            console.log("KV_REST_API_TOKEN not set");
+        }
+        console.log("Vercel KV environment variables not set, using fallback storage");
     }
-}
-
-// Initialize KV if available (non-blocking)
-if (typeof window === "undefined") {
-    initKV().catch(() => {
-        // Ignore initialization errors
-    });
 }
 
 // In-memory cache (for performance, not primary storage)
@@ -97,14 +122,21 @@ export async function getAgent(id: string): Promise<AgentSpec | null> {
     // Try KV storage (for Vercel/production)
     if (kv) {
         try {
+            console.log(`Loading agent ${id} from KV...`);
             const agentData = await kv.get(`${KV_PREFIX}${id}`);
             if (agentData) {
-                agentCache.set(id, agentData);
-                return agentData;
+                // Vercel KV returns the object directly (handles JSON automatically)
+                agentCache.set(id, agentData as AgentSpec);
+                console.log(`Agent ${id} loaded from KV successfully`);
+                return agentData as AgentSpec;
+            } else {
+                console.log(`Agent ${id} not found in KV`);
             }
         } catch (err) {
             console.error(`Error reading agent ${id} from KV:`, err);
         }
+    } else {
+        console.log(`KV not available, checking filesystem for agent ${id}`);
     }
 
     // Fallback to filesystem (for local dev)
@@ -136,17 +168,30 @@ export async function saveAgent(agent: AgentSpec): Promise<void> {
     // Save to KV storage (for Vercel/production)
     if (kv) {
         try {
+            console.log(`Saving agent ${agent.id} to KV...`);
+            // Vercel KV handles JSON serialization automatically
             await kv.set(`${KV_PREFIX}${agent.id}`, agent);
 
             // Update index
-            const index = await kv.get(KV_INDEX_KEY) || [];
-            if (!index.includes(agent.id)) {
-                index.push(agent.id);
-                await kv.set(KV_INDEX_KEY, index);
+            const index = (await kv.get(KV_INDEX_KEY)) || [];
+            if (!Array.isArray(index) || !index.includes(agent.id)) {
+                const newIndex = Array.isArray(index) ? [...index, agent.id] : [agent.id];
+                await kv.set(KV_INDEX_KEY, newIndex);
+            }
+
+            // Verify it was saved by reading it back
+            const verify = await kv.get(`${KV_PREFIX}${agent.id}`);
+            if (verify) {
+                console.log(`Agent ${agent.id} saved to KV successfully and verified`);
+            } else {
+                console.warn(`Agent ${agent.id} save verification failed - may have propagation delay`);
             }
         } catch (err) {
             console.error(`Error saving agent ${agent.id} to KV:`, err);
+            // Don't throw - allow fallback to continue
         }
+    } else {
+        console.warn(`KV not available, agent ${agent.id} only cached in memory (will not persist)`);
     }
 
     // Try to save to filesystem (for local dev)
