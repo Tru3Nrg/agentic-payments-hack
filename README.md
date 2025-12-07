@@ -156,25 +156,41 @@ Agents can use the following tools:
 
 ## 🚀 Vercel Deployment
 
-### Setting Up Vercel KV for Persistent Storage
+### Setting Up Redis Storage for Persistent Agent Data
 
-The application uses Vercel KV (Redis) for persistent agent storage in production. To set it up:
+The application uses Redis for persistent agent storage in production. You can use either **Upstash Redis** (recommended) or **Vercel KV**.
+
+#### Option 1: Upstash Redis (Recommended) ⭐
+
+1. **Add Upstash Redis from Vercel Marketplace:**
+   - Go to your Vercel project dashboard
+   - Navigate to the "Storage" tab
+   - Click "Browse Marketplace" or "Add Integration"
+   - Search for "Upstash" and select "Upstash Redis"
+   - Follow the setup wizard to create a Redis database
+
+2. **Environment Variables:**
+   Upstash automatically provides these environment variables:
+   - `UPSTASH_REDIS_REST_URL` - Automatically set by Vercel
+   - `UPSTASH_REDIS_REST_TOKEN` - Automatically set by Vercel
+
+3. **Redeploy:**
+   After adding Upstash Redis, redeploy your application. The storage layer will automatically detect and use Upstash Redis.
+
+#### Option 2: Vercel KV (if available)
 
 1. **Create a Vercel KV Database:**
    - Go to your Vercel project dashboard
    - Navigate to the "Storage" tab
-   - Click "Create Database" and select "KV"
+   - Click "Create Database" and select "KV" (if available)
    - Follow the setup wizard
 
 2. **Environment Variables:**
-   Vercel KV automatically provides these environment variables:
+   Vercel KV automatically provides:
    - `KV_REST_API_URL` - Automatically set by Vercel
    - `KV_REST_API_TOKEN` - Automatically set by Vercel
 
-3. **Redeploy:**
-   After creating the KV database, redeploy your application. The storage layer will automatically detect and use Vercel KV.
-
-**Note:** For local development, the app falls back to filesystem storage. In production on Vercel, it uses Vercel KV for persistence across serverless function invocations.
+**Note:** The code automatically detects which Redis provider is configured and uses it. For local development, the app falls back to filesystem storage. In production on Vercel, it uses Redis for persistence across serverless function invocations.
 
 ## 📝 Scripts
 

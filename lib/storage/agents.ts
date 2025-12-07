@@ -2,8 +2,10 @@ import { AgentSpec } from "@/lib/agents/spec";
 import fs from "fs";
 import path from "path";
 
-// Try to initialize Vercel KV (Redis) for persistent storage
-// Vercel KV automatically reads from KV_REST_API_URL and KV_REST_API_TOKEN env vars
+// Try to initialize Redis/KV for persistent storage
+// Supports both Vercel KV and Upstash Redis
+// Vercel KV uses: KV_REST_API_URL and KV_REST_API_TOKEN
+// Upstash Redis uses: UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN
 let kv: any = null;
 let kvInitialized = false;
 
@@ -11,19 +13,20 @@ async function initKV() {
     if (kvInitialized) return;
     kvInitialized = true;
 
-    // Check if KV environment variables are set
-    const hasKVEnv = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    // Check for Vercel KV environment variables
+    const hasVercelKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    // Check for Upstash Redis environment variables
+    const hasUpstashRedis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
 
-    if (hasKVEnv && !kv) {
+    if (hasVercelKV && !kv) {
         try {
-            // @vercel/kv exports kv as a named export
+            // Try Vercel KV first
             const vercelKvModule = await import("@vercel/kv");
             kv = vercelKvModule.kv;
 
-            // Test the connection
             if (kv) {
                 console.log("Vercel KV initialized successfully");
-                // Test write/read to verify it works
+                // Test the connection
                 try {
                     await kv.set("__test__", "ok");
                     const testValue = await kv.get("__test__");
@@ -36,18 +39,41 @@ async function initKV() {
                 }
             }
         } catch (err) {
-            // KV not available, will use fallback storage
-            console.warn("Vercel KV not available, using fallback storage:", err);
+            console.warn("Vercel KV not available:", err);
+            kv = null;
+        }
+    } else if (hasUpstashRedis && !kv) {
+        try {
+            // Try Upstash Redis
+            const { Redis } = await import("@upstash/redis");
+            kv = new Redis({
+                url: process.env.UPSTASH_REDIS_REST_URL!,
+                token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+            });
+
+            if (kv) {
+                console.log("Upstash Redis initialized successfully");
+                // Test the connection
+                try {
+                    await kv.set("__test__", "ok");
+                    const testValue = await kv.get("__test__");
+                    if (testValue === "ok") {
+                        await kv.del("__test__");
+                        console.log("Upstash Redis connection verified");
+                    }
+                } catch (testErr) {
+                    console.warn("Upstash Redis connection test failed:", testErr);
+                }
+            }
+        } catch (err) {
+            console.warn("Upstash Redis not available:", err);
             kv = null;
         }
     } else {
-        if (!process.env.KV_REST_API_URL) {
-            console.log("KV_REST_API_URL not set");
+        if (!hasVercelKV && !hasUpstashRedis) {
+            console.log("No Redis/KV environment variables set, using fallback storage");
+            console.log("Set either KV_REST_API_URL/KV_REST_API_TOKEN (Vercel KV) or UPSTASH_REDIS_REST_URL/UPSTASH_REDIS_REST_TOKEN (Upstash Redis)");
         }
-        if (!process.env.KV_REST_API_TOKEN) {
-            console.log("KV_REST_API_TOKEN not set");
-        }
-        console.log("Vercel KV environment variables not set, using fallback storage");
     }
 }
 
