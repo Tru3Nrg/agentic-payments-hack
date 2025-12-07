@@ -1,0 +1,11 @@
+{
+  "id": "0436ebe2-b7b1-4772-97d2-275170127ae4",
+  "agentId": "game-item-store",
+  "buyerAddress": "0xeeB209aa83e99EE1F25947f56129a4B38fe35085",
+  "itemId": "sword",
+  "itemName": "Sword of Monad",
+  "amount": 0.0001,
+  "token": "MON",
+  "paidAt": "2025-12-07T01:08:49.580Z",
+  "txHash": "0xd8b9bf62c100b217e35dfba597467cc782c3ca22bf0e77f2f9e83c02be6669d1"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "3bb7aaf8-0685-4915-bec1-401087f5cc49",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x3804b8950c198D5FaE4e991D469672038C906473",
+    "encryptedKey": "0x3768f0fe91ffa0a5745e2d603c3fc66c52cbeeb8197a725645de7d66001dc3e7"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "fetch price of MON every 2 minutes"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get"
+  ]
+}

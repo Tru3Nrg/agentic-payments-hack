@@ -1,0 +1,27 @@
+{
+  "id": "40d1b2b7-ab28-475d-ad69-9830c34bc865",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0xfaa7793450697C93f2ba164160a394390563124f",
+    "encryptedKey": "0x78f63d9f1ec8abeb2c58d4d508866e80f6747e221912215dafd1eebdc6eb8850"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "fetch the price of Bitcoin every minute"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get"
+  ]
+}

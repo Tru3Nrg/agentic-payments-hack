@@ -1,0 +1,28 @@
+{
+  "id": "aaca5b4f-f6d7-41ba-877d-c04400d7f033",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x5D7551C878cC6eb379022CA4aF0BE2D6034e750b",
+    "encryptedKey": "0x599075ae2bad9394be7ae4d1bcd41264c2f5ac0c0430240e42fc6c74f0c8170d"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "fetch price of flights to mexico city in a week"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get",
+    "coinbase.getPrice"
+  ]
+}

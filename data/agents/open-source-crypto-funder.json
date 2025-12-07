@@ -1,0 +1,41 @@
+{
+  "id": "open-source-crypto-funder",
+  "name": "Open Source Crypto Funder",
+  "description": "Scans curated GitHub repos for crypto-friendly projects and auto-funds them on Monad testnet.",
+  "wallet": {
+    "address": "0x13B7256071194E65D891415F118e285fc8dd90d1",
+    "encryptedKey": "0xbe5e515bed5523e950a945b40f837713ce918697b60290a436ad79c46d542849"
+  },
+  "pricing": {
+    "enabled": false,
+    "token": "USDC",
+    "amount": 0
+  },
+  "tools": [
+    "github.searchUsers",
+    "github.searchRepositories",
+    "wallet.fundProjects"
+  ],
+  "logic": {
+    "steps": [
+      {
+        "type": "github.searchUsers",
+        "input": {
+          "query": "monad is:sponsorable"
+        }
+      },
+      {
+        "type": "github.searchRepositories",
+        "input": {
+          "query": "monad"
+        }
+      },
+      {
+        "type": "github.searchUsers",
+        "input": {
+          "query": "crypto is:sponsorable type:user"
+        }
+      }
+    ]
+  }
+}

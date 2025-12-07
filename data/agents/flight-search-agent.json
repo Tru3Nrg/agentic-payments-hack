@@ -1,0 +1,29 @@
+{
+  "id": "flight-search-agent",
+  "name": "Flight Search Assistant",
+  "description": "Finds the best flight deals using Amadeus API.",
+  "wallet": {
+    "address": "0x02F136370D0CfC06F1be70e6f41b44a1FA0b6889",
+    "encryptedKey": "0x912615783c704f043c8998f6dc82af1372c2ef4766c21b3c60175a4407238297"
+  },
+  "pricing": {
+    "enabled": false,
+    "token": "USDC",
+    "amount": 0
+  },
+  "tools": [
+    "amadeus.searchFlights"
+  ],
+  "logic": {
+    "steps": [
+      {
+        "type": "amadeus.searchFlights",
+        "input": {
+          "origin": "SFO",
+          "destination": "JFK",
+          "departureDate": "2025-12-25"
+        }
+      }
+    ]
+  }
+}

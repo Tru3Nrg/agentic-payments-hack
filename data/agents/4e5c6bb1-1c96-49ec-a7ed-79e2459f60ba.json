@@ -1,0 +1,28 @@
+{
+  "id": "4e5c6bb1-1c96-49ec-a7ed-79e2459f60ba",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x6172C68CF1bdDc3AA6Ed60cd427E6Ef7A785c348",
+    "encryptedKey": "0x7d7d27785bab17bb4753e919ffee185f1b545a6cd6f04500497c9e091a0caf34"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "fetch price of flights from SFO to Mexico city "
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get",
+    "coinbase.getPrice"
+  ]
+}

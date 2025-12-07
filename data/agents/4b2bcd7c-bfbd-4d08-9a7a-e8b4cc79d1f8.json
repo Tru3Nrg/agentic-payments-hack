@@ -1,0 +1,27 @@
+{
+  "id": "4b2bcd7c-bfbd-4d08-9a7a-e8b4cc79d1f8",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x7aEe43f3bea1828aB22C23B16e8224fF255862fA",
+    "encryptedKey": "0x724de39c9d6f411ed6ec1826e3474abe79cbf650933147749cf501344b2e93f6"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "fetch flights to mexico"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get"
+  ]
+}

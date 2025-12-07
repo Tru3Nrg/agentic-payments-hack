@@ -1,0 +1,27 @@
+{
+  "id": "github-support-agent",
+  "name": "GitHub Support Finder",
+  "description": "Finds GitHub issues with 'support' or 'help wanted' labels for developers.",
+  "wallet": {
+    "address": "0x7c5a260bF3963aAfc48AA15C707814785458394B",
+    "encryptedKey": "0xbd83b76c5cfe973a7d8c16bda104999ef0540ca74b4e15edf47b21b5c563e9f1"
+  },
+  "pricing": {
+    "enabled": false,
+    "token": "USDC",
+    "amount": 0
+  },
+  "tools": [
+    "github.searchIssues"
+  ],
+  "logic": {
+    "steps": [
+      {
+        "type": "github.searchIssues",
+        "input": {
+          "query": "label:support label:\"help wanted\" state:open"
+        }
+      }
+    ]
+  }
+}

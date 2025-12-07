@@ -1,0 +1,27 @@
+{
+  "id": "806bdd6c-d30a-418f-8bb4-28d3c156d920",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x05aCB327FA679199e22cf3F49547956c1D0dB1b6",
+    "encryptedKey": "0x14cf7ec31d1dfbdd34328178b45a406e0c24293c112ecaa9121174950280323b"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "http.get",
+        "input": {
+          "url": "https://api.coindesk.com/v1/bpi/currentprice.json"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get"
+  ]
+}

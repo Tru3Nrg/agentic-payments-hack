@@ -1,0 +1,11 @@
+{
+  "id": "10673ca4-e507-4a5c-82d6-7692740d0275",
+  "agentId": "game-item-store",
+  "buyerAddress": "0xeeB209aa83e99EE1F25947f56129a4B38fe35085",
+  "itemId": "shield",
+  "itemName": "Shield of Gasless",
+  "amount": 0.0001,
+  "token": "MON",
+  "paidAt": "2025-12-07T01:10:29.695Z",
+  "txHash": "0x81c8417f8b2bb70bc573400836cdd532a28395129370b1e9f0b9125af727b346"
+}

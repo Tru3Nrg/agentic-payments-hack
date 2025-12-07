@@ -1,0 +1,28 @@
+{
+  "id": "5b270b8a-39f8-46a2-b476-85bfe3a815e0",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x0Ee1BB10e5c35954e1D55Bf675620b5F4ee02759",
+    "encryptedKey": "0xb458ae7035c2ca08aa3cf7b9291129e977c73fa27b9916b2060a3e8dc8d18b94"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "coinbase.getPrice",
+        "input": {
+          "pair": "BTC-USD"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get",
+    "coinbase.getPrice"
+  ]
+}

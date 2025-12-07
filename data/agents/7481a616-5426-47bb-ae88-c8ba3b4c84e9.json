@@ -1,0 +1,28 @@
+{
+  "id": "7481a616-5426-47bb-ae88-c8ba3b4c84e9",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0x4e30699320B01517542b44AbD15942f45B81C39a",
+    "encryptedKey": "0x1ed58ca41254d16acbae2cc1b30fe96e3fb5483ae1290c72ad8c7530dcebce3d"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.001
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "coinbase.getPrice",
+        "input": {
+          "pair": "MON-USD"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get",
+    "coinbase.getPrice"
+  ]
+}

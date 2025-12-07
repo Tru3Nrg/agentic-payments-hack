@@ -1,0 +1,27 @@
+{
+  "id": "auto-item-buyer",
+  "name": "Auto Item Buyer Agent",
+  "description": "Automatically purchases items from the game store using MON via x402 payments. Handles the full payment flow automatically.",
+  "wallet": {
+    "address": "0x4e5bb317F6A50E136087572E919B26A530B8f844",
+    "encryptedKey": "0xc70ad16ca8d5d2b0199352acfb3aac25f167344062cc3690fd0d93327ac3c85b"
+  },
+  "pricing": {
+    "enabled": false,
+    "token": "MON",
+    "amount": 0
+  },
+  "tools": [
+    "store.listItems",
+    "store.getItemById",
+    "store.purchaseItem"
+  ],
+  "logic": {
+    "steps": [
+      {
+        "type": "store.purchaseItem",
+        "input": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "game-item-store",
+  "name": "Game Item Store Agent",
+  "description": "Sells virtual Sword and Shield items using MON via 402-paywalled API on Monad testnet.",
+  "wallet": {
+    "address": "0x9f52df10fECdE4cCc05DEff4Bf3df7714B56d34E",
+    "encryptedKey": "0x781e4115ff9289fda9a5d47c55ed0acae956f12a48f92649e6daac5d8ec296cd"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0
+  },
+  "tools": [
+    "store.listItems",
+    "store.getItemById",
+    "store.recordPurchase"
+  ],
+  "logic": {
+    "steps": [
+      {
+        "type": "store.handleAction",
+        "input": {}
+      }
+    ]
+  }
+}

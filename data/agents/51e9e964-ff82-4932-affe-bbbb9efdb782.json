@@ -1,0 +1,27 @@
+{
+  "id": "51e9e964-ff82-4932-affe-bbbb9efdb782",
+  "name": "New Agent",
+  "description": "",
+  "wallet": {
+    "address": "0xFe5C9f562Ab8C386F8181e495C4b3629D8E63BE6",
+    "encryptedKey": "0xa741b8f513efaaeac508e4012d06850cc83db81e02bd615bbb3125bdedc81f42"
+  },
+  "pricing": {
+    "enabled": true,
+    "token": "MON",
+    "amount": 0.1
+  },
+  "logic": {
+    "steps": [
+      {
+        "type": "llm.generate",
+        "input": {
+          "prompt": "find projects on github that have monad chain addresses"
+        }
+      }
+    ]
+  },
+  "tools": [
+    "http.get"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "41d7a702-1b76-42db-b10e-ce2ab6d851f2",
+  "agentId": "game-item-store",
+  "buyerAddress": "0xeeB209aa83e99EE1F25947f56129a4B38fe35085",
+  "itemId": "bundle",
+  "itemName": "Sword & Shield Bundle",
+  "amount": 0.00018,
+  "token": "MON",
+  "paidAt": "2025-12-07T01:15:38.971Z",
+  "txHash": "0x7355a253d544555042cadba3f5e9a567430d278a15db23fae8d13a8d66efb163"
+}
